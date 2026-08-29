@@ -94,6 +94,7 @@ export function JobDetail({
               title="Delete this job application?"
               description={`This permanently removes ${job.company} (${job.role}) and all of its interviews. This can't be undone.`}
               action={deleteJob.bind(null, job.id)}
+              onSuccess={() => router.push("/pipeline")}
               trigger={
                 <Button variant="outline" size="icon-sm" aria-label="Delete job">
                   <TrashIcon className="size-3.5" />

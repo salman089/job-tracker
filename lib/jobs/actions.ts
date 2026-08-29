@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { createNotification } from "@/lib/notifications/create";
 import { JOB_STATUS_LABELS, type JobFormState, type JobStatus } from "@/lib/types";
@@ -152,7 +151,7 @@ export async function deleteJob(
 
   revalidatePath("/dashboard");
   revalidatePath("/pipeline");
-  redirect("/pipeline");
+  return {};
 }
 
 export async function updateJobStatus(

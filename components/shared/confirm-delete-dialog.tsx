@@ -21,6 +21,10 @@ interface ConfirmDeleteDialogProps {
   /** Server action bound to the record id, e.g. `deleteJob.bind(null, job.id)`. */
   action: (state: { error?: string }, formData: FormData) => Promise<{ error?: string }>;
   trigger: React.ReactNode;
+  /** Called after a successful delete - e.g. to navigate away from a page
+   * whose own record was just deleted, since the action itself no longer
+   * redirects (see deleteJob). */
+  onSuccess?: () => void;
 }
 
 /**
@@ -34,6 +38,7 @@ export function ConfirmDeleteDialog({
   confirmLabel = "Delete",
   action,
   trigger,
+  onSuccess,
 }: ConfirmDeleteDialogProps) {
   const [open, setOpen] = React.useState(false);
   const [state, formAction, pending] = useActionState(action, {});
@@ -42,9 +47,10 @@ export function ConfirmDeleteDialog({
   React.useEffect(() => {
     if (wasPending.current && !pending && !state.error) {
       setOpen(false);
+      onSuccess?.();
     }
     wasPending.current = pending;
-  }, [pending, state]);
+  }, [pending, state, onSuccess]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
