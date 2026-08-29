@@ -30,7 +30,7 @@ function timeAgo(iso: string) {
   if (hours < 24) return `${hours}h ago`;
   const days = Math.floor(hours / 24);
   if (days < 7) return `${days}d ago`;
-  return new Date(iso).toLocaleDateString(undefined, { day: "2-digit", month: "2-digit" });
+  return new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit" });
 }
 
 export function NotificationBell({ notifications }: { notifications: AppNotification[] }) {

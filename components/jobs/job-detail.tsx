@@ -37,7 +37,7 @@ import { useRouter } from "next/navigation";
 
 function formatDate(iso: string | null) {
   if (!iso) return "Not scheduled";
-  return new Date(iso).toLocaleString(undefined, {
+  return new Date(iso).toLocaleString("en-GB", {
     dateStyle: "medium",
     timeStyle: "short",
   });

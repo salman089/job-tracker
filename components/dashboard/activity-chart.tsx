@@ -63,7 +63,7 @@ export function ActivityChart({ data }: { data: DayCount[] }) {
       <div className="mt-1 flex justify-between font-mono text-[10px] text-muted-foreground">
         {data.map((d) => (
           <span key={d.date}>
-            {new Date(d.date).toLocaleDateString(undefined, { month: "numeric", day: "numeric" })}
+            {new Date(d.date).toLocaleDateString("en-GB", { month: "numeric", day: "numeric" })}
           </span>
         ))}
       </div>

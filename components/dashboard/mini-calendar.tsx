@@ -32,7 +32,7 @@ export function MiniCalendar({ markedDates }: { markedDates: Set<string> }) {
     <div className="glass-surface rounded-2xl p-4">
       <div className="mb-3 flex items-center justify-between">
         <p className="font-heading text-sm font-semibold text-foreground">
-          {cursor.toLocaleString(undefined, { month: "long", year: "numeric" })}
+          {cursor.toLocaleString("en-GB", { month: "long", year: "numeric" })}
         </p>
         <div className="flex gap-1">
           <button

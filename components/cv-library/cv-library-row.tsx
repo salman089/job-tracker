@@ -13,7 +13,7 @@ function fileNameFromPath(path: string) {
 }
 
 function formatDate(iso: string) {
-  return new Date(iso).toLocaleDateString(undefined, { day: "2-digit", month: "2-digit", year: "numeric" });
+  return new Date(iso).toLocaleDateString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric" });
 }
 
 export function CvLibraryRow({ job }: { job: Job }) {
