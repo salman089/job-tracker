@@ -54,11 +54,9 @@ export async function signInWithPassword(
   }
 
   const supabase = await createClient();
-  const captchaToken = String(formData.get("captchaToken") ?? "") || undefined;
   const { data, error } = await supabase.auth.signInWithPassword({
     email: String(email),
     password: String(password),
-    options: { captchaToken },
   });
 
   if (error) {
@@ -90,11 +88,10 @@ export async function signUpWithPassword(
 
   const supabase = await createClient();
   const origin = await getOrigin();
-  const captchaToken = String(formData.get("captchaToken") ?? "") || undefined;
   const { error } = await supabase.auth.signUp({
     email: String(email),
     password: String(password),
-    options: { emailRedirectTo: `${origin}/auth/callback`, captchaToken },
+    options: { emailRedirectTo: `${origin}/auth/callback` },
   });
 
   if (error) {

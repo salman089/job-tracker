@@ -1,33 +1,16 @@
 "use client";
 
-import * as React from "react";
 import { useActionState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  TurnstileWidget,
-  TURNSTILE_SITE_KEY,
-  type TurnstileWidgetHandle,
-} from "@/components/auth/turnstile-widget";
 import { signUpWithPassword, signInWithGoogle, type AuthFormState } from "@/lib/auth/actions";
 
 const initialState: AuthFormState = {};
 
 export function SignupForm() {
   const [state, formAction, pending] = useActionState(signUpWithPassword, initialState);
-  const [captchaToken, setCaptchaToken] = React.useState("");
-  const captchaRequired = Boolean(TURNSTILE_SITE_KEY);
-  const captchaPending = captchaRequired && !captchaToken;
-  const turnstileRef = React.useRef<TurnstileWidgetHandle>(null);
-
-  React.useEffect(() => {
-    if (state.message || state.errors) {
-      setCaptchaToken("");
-      turnstileRef.current?.reset();
-    }
-  }, [state]);
 
   return (
     <div className="flex flex-col gap-5">
@@ -75,15 +58,12 @@ export function SignupForm() {
           <p className="text-xs text-muted-foreground">At least 8 characters.</p>
         </div>
 
-        <input type="hidden" name="captchaToken" value={captchaToken} />
-        <TurnstileWidget ref={turnstileRef} onVerify={setCaptchaToken} />
-
         {state.message && !state.errors && (
           <p className="text-xs text-destructive">{state.message}</p>
         )}
 
-        <Button type="submit" disabled={pending || captchaPending} className="w-full">
-          {pending ? "Creating account..." : captchaPending ? "Completing security check..." : "Sign up"}
+        <Button type="submit" disabled={pending} className="w-full">
+          {pending ? "Creating account..." : "Sign up"}
         </Button>
       </form>
 

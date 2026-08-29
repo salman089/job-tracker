@@ -1,36 +1,16 @@
 "use client";
 
-import * as React from "react";
 import { useActionState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  TurnstileWidget,
-  TURNSTILE_SITE_KEY,
-  type TurnstileWidgetHandle,
-} from "@/components/auth/turnstile-widget";
 import { signInWithPassword, signInWithGoogle, type AuthFormState } from "@/lib/auth/actions";
 
 const initialState: AuthFormState = {};
 
 export function LoginForm() {
   const [state, formAction, pending] = useActionState(signInWithPassword, initialState);
-  const [captchaToken, setCaptchaToken] = React.useState("");
-  const captchaRequired = Boolean(TURNSTILE_SITE_KEY);
-  const captchaPending = captchaRequired && !captchaToken;
-  const turnstileRef = React.useRef<TurnstileWidgetHandle>(null);
-
-  // A rejected/consumed token would otherwise just get resubmitted as-is on
-  // the next click, failing identically every time — force a fresh
-  // challenge whenever the previous submission came back with an error.
-  React.useEffect(() => {
-    if (state.message || state.errors) {
-      setCaptchaToken("");
-      turnstileRef.current?.reset();
-    }
-  }, [state]);
 
   return (
     <div className="flex flex-col gap-5">
@@ -79,15 +59,12 @@ export function LoginForm() {
           )}
         </div>
 
-        <input type="hidden" name="captchaToken" value={captchaToken} />
-        <TurnstileWidget ref={turnstileRef} onVerify={setCaptchaToken} />
-
         {state.message && !state.errors && (
           <p className="text-xs text-destructive">{state.message}</p>
         )}
 
-        <Button type="submit" disabled={pending || captchaPending} className="w-full">
-          {pending ? "Logging in..." : captchaPending ? "Completing security check..." : "Log in"}
+        <Button type="submit" disabled={pending} className="w-full">
+          {pending ? "Logging in..." : "Log in"}
         </Button>
       </form>
 
