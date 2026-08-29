@@ -31,6 +31,13 @@ export function StaggerReveal({
       return;
     }
 
+    // onScroll's ScrollObserver only evaluates on a scroll/resize event, so
+    // content already inside the viewport at mount (above the fold) never
+    // gets triggered by it - waiting for a scroll that may never come. Play
+    // immediately in that case instead of handing control to onScroll.
+    const rect = el.getBoundingClientRect();
+    const alreadyInView = rect.top < window.innerHeight && rect.bottom > 0;
+
     let scope: Scope | undefined;
     try {
       scope = createScope({ root: rootRef }).add(() => {
@@ -40,7 +47,9 @@ export function StaggerReveal({
           duration: 700,
           delay: stagger(staggerDelay),
           ease: "outExpo",
-          autoplay: onScroll({ target: el, enter: "bottom-=40 top", repeat: false }),
+          autoplay: alreadyInView
+            ? true
+            : onScroll({ target: el, enter: "bottom-=40 top", repeat: false }),
         });
       });
     } catch {

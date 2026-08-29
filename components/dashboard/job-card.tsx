@@ -50,7 +50,7 @@ export function JobCard({ job, style }: { job: Job; style?: React.CSSProperties 
         {job.salary_min && (
           <span className="font-mono text-[10px] text-muted-foreground">
             {job.currency} {job.salary_min.toLocaleString()}
-            {job.salary_max ? `–${job.salary_max.toLocaleString()}` : ""}
+            {job.salary_max ? `-${job.salary_max.toLocaleString()}` : ""}
           </span>
         )}
       </div>
